@@ -1,4 +1,18 @@
 'use strict';
+//TODO LIST
+//!easy
+//Ability to edit workout
+//Ability to delete workout
+//Ability to delete all workout
+//Sort by distance or by duration
+//rebuilt running and cycling objects coming from local storage, chain them to classes
+//More realistic error and confirmation messages
+//!hard
+//ability to position the map to show all workouts
+//Allow do draw lines and shapes instead of just points?
+//!async
+//Add geocode location from coordinates
+//Display weather data for workout time and place
 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
@@ -73,7 +87,7 @@ class Cycling extends Workout {
 //APPLICATION
 class App {
   #map;
-  #mapZoomLevel = 13;
+  #mapZoomLevel = 15;
   #mapEvent;
   #workouts = [];
 
@@ -245,6 +259,7 @@ class App {
             <span class="workout__value">${workout.cadence}</span>
             <span class="workout__unit">spm</span>
           </div>
+          <span class="workout__btn--close">&times;</span>
         </li>`;
     }
 
@@ -259,6 +274,7 @@ class App {
             <span class="workout__value">${workout.elevationGain}</span>
             <span class="workout__unit">m</span>
           </div>
+          <span class="workout__btn--close">&times;</span>
         </li>`;
     }
 
