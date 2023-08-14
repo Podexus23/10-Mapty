@@ -90,6 +90,7 @@ class App {
   #mapZoomLevel = 15;
   #mapEvent;
   #workouts = [];
+  #markers = [];
 
   constructor() {
     this._getPosition();
@@ -100,6 +101,8 @@ class App {
     //Attach event handlers
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
+
+    containerWorkouts.addEventListener('click', this._removeWorkout.bind(this));
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
   }
 
@@ -214,7 +217,9 @@ class App {
   }
 
   _renderWorkoutMarker(workout) {
-    L.marker(workout.coords)
+    const workoutMarker = L.marker(workout.coords);
+
+    workoutMarker
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -229,6 +234,7 @@ class App {
         `${workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'} ${workout.description}`
       )
       .openPopup();
+    this.#markers.push({ marker: workoutMarker, id: workout.id });
   }
 
   _renderWorkout(workout) {
@@ -317,6 +323,31 @@ class App {
   reset() {
     localStorage.removeItem('workouts');
     location.reload();
+  }
+
+  _removeWorkout(e) {
+    //Check for clicked close btn
+    const closeBtn = e.target.classList.contains('workout__btn--close');
+    if (!closeBtn) return;
+
+    //find id's and indexes of workout
+    const workoutEl = e.target.closest('.workout');
+    const id = workoutEl.dataset.id;
+    const workoutIndex = this.#workouts.findIndex(e => (e.id = id));
+    const markerIndex = this.#markers.findIndex(e => (e.id = id));
+    const workout = this.#workouts[workoutIndex];
+    const workMarker = this.#markers[markerIndex];
+
+    //Remove workout map marker and from sidebar
+    containerWorkouts.removeChild(workoutEl);
+    workMarker.marker.removeFrom(this.#map);
+
+    //Remove workout data from #workouts and #markers
+    this.#workouts.splice(workoutIndex, 1);
+    this.#markers.splice(markerIndex, 1);
+
+    //set updated data for localStorage
+    this._setLocalStorage();
   }
 }
 const app = new App();
