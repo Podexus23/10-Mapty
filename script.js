@@ -102,8 +102,12 @@ class App {
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
 
-    containerWorkouts.addEventListener('click', this._removeWorkout.bind(this));
-    containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
+    containerWorkouts.addEventListener(
+      'click',
+      this._sidebarHandler.bind(this)
+    );
+
+    // containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
   }
 
   _getPosition() {
@@ -289,13 +293,11 @@ class App {
 
   _moveToPopup(e) {
     const workoutEl = e.target.closest('.workout');
-
     if (!workoutEl) return;
 
     const workout = this.#workouts.find(
       work => work.id === workoutEl.dataset.id
     );
-
     this.#map.setView(workout.coords, this.#mapZoomLevel, {
       animate: true,
       pan: { duration: 1 },
@@ -325,6 +327,20 @@ class App {
     location.reload();
   }
 
+  _sidebarHandler(e) {
+    const workoutEl = e.target.closest('.workout');
+    if (!workoutEl) return;
+
+    const closeBtn = e.target.classList.contains('workout__btn--close');
+    if (closeBtn) {
+      this._removeWorkout(e);
+      return;
+    }
+
+    //Move to popup event
+    this._moveToPopup(e);
+  }
+
   _removeWorkout(e) {
     //Check for clicked close btn
     const closeBtn = e.target.classList.contains('workout__btn--close');
@@ -333,8 +349,8 @@ class App {
     //find id's and indexes of workout
     const workoutEl = e.target.closest('.workout');
     const id = workoutEl.dataset.id;
-    const workoutIndex = this.#workouts.findIndex(e => (e.id = id));
-    const markerIndex = this.#markers.findIndex(e => (e.id = id));
+    const workoutIndex = this.#workouts.findIndex(e => e.id === id);
+    const markerIndex = this.#markers.findIndex(e => e.id === id);
     const workout = this.#workouts[workoutIndex];
     const workMarker = this.#markers[markerIndex];
 
@@ -346,7 +362,7 @@ class App {
     this.#workouts.splice(workoutIndex, 1);
     this.#markers.splice(markerIndex, 1);
 
-    //set updated data for localStorage
+    // set updated data for localStorage
     this._setLocalStorage();
   }
 }
