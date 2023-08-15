@@ -47,6 +47,7 @@ a:visited {
   padding: 3rem 5rem 4rem 5rem;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .logo {
@@ -231,6 +232,105 @@ a:visited {
 .twitter-link:hover,
 .twitter-link:active {
   color: var(--color-light--2);
+}
+
+/* SideBar Modal Window */
+.sidebar__modal {
+  width: 100%;
+  display: block;
+  background: rgba(255, 255, 255, 0.5);
+  height: 100%;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.modal__wrapper {
+  background-color: #2d3439;
+  padding: 2rem;
+  font-size: 1.6rem;
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.modal__title {
+  line-height: 1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.modal__description {
+  font-size: 1.2rem;
+  letter-spacing: 0.2px;
+  padding-bottom: 1.6rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.modal__buttons {
+  display: flex;
+  -moz-column-gap: 1rem;
+  column-gap: 1rem;
+}
+
+.modal__button {
+  flex: 1 1 50%;
+  padding: 0.5rem 0;
+  font-family: inherit;
+  font-size: 1.3;
+}
+
+.modal__button--yes {
+  background-color: #f95c5cb4;
+  border: 1px solid #ffffff61;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+
+  transition: all 0.3s;
+}
+
+.modal__button--yes:hover {
+  background-color: #ff42428a;
+}
+
+.modal__button--no {
+  background-color: #5cf95cb4;
+  border: 1px solid #ffffff61;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+
+  transition: all 0.3s;
+}
+
+.modal__button--no:hover {
+  background-color: #42ff948a;
+}
+
+.sidebar__modal.hidden {
+  /* display: none; */
+  visibility: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  opacity: 0;
 }
 
 /* MAP */

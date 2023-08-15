@@ -21,7 +21,9 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
+//sidebar modal window elements
 const btnDeleteWorkouts = document.querySelector('.sidebar__btn--delete');
+const sidebarModalEl = document.querySelector('.sidebar__modal');
 
 class Workout {
   date = new Date();
@@ -109,7 +111,11 @@ class App {
     );
     btnDeleteWorkouts.addEventListener(
       'click',
-      this._removeAllWorkouts.bind(this)
+      this._handleRemoveAllButton.bind(this)
+    );
+    sidebarModalEl.addEventListener(
+      'click',
+      this._handleRemoveAllModal.bind(this)
     );
 
     // containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -371,7 +377,7 @@ class App {
     this._setLocalStorage();
   }
 
-  _removeAllWorkouts(e) {
+  _removeAllWorkouts() {
     //remove from workouts interface
     const workoutElems = containerWorkouts.querySelectorAll('.workout');
     workoutElems.forEach(elem => containerWorkouts.removeChild(elem));
@@ -385,6 +391,28 @@ class App {
 
     //update local storage
     this._setLocalStorage();
+  }
+
+  _handleRemoveAllButton(e) {
+    sidebarModalEl.classList.remove('hidden');
+  }
+
+  _handleRemoveAllModal(e) {
+    const closeModal = () => {
+      sidebarModalEl.classList.add('hidden');
+    };
+
+    if (
+      e.target.classList.contains('sidebar__modal') ||
+      e.target.closest('.modal__button--no')
+    ) {
+      closeModal();
+    }
+
+    if (e.target.closest('.modal__button--yes')) {
+      this._removeAllWorkouts();
+      closeModal();
+    }
   }
 }
 const app = new App();
