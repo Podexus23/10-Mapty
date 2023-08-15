@@ -21,7 +21,7 @@ const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
-const btnDeleteWorkouts = document.querySelector('.workouts__btn--delete--all');
+const btnDeleteWorkouts = document.querySelector('.sidebar__btn--delete');
 
 class Workout {
   date = new Date();
@@ -106,6 +106,10 @@ class App {
     containerWorkouts.addEventListener(
       'click',
       this._sidebarHandler.bind(this)
+    );
+    btnDeleteWorkouts.addEventListener(
+      'click',
+      this._removeAllWorkouts.bind(this)
     );
 
     // containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -366,5 +370,159 @@ class App {
     // set updated data for localStorage
     this._setLocalStorage();
   }
+
+  _removeAllWorkouts(e) {
+    //remove from workouts interface
+    const workoutElems = containerWorkouts.querySelectorAll('.workout');
+    workoutElems.forEach(elem => containerWorkouts.removeChild(elem));
+    this.#markers.forEach(mark => {
+      console.log(this);
+      mark.marker.removeFrom(this.#map);
+    });
+    //remove workouts data from app
+    this.#workouts = [];
+    this.#markers = [];
+
+    //update local storage
+    this._setLocalStorage();
+  }
 }
 const app = new App();
+
+`[
+  {
+    "date": "2023-08-15T13:57:50.795Z",
+    "id": "2107870795",
+    "clicks": 0,
+    "coords": [
+      52.42137140544184,
+      30.973248481750492
+    ],
+    "distance": 12,
+    "duration": 33,
+    "type": "running",
+    "cadence": 114,
+    "pace": 2.75,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T13:57:58.027Z",
+    "id": "2107878027",
+    "clicks": 0,
+    "coords": [
+      52.41430442470195,
+      31.01826667785645
+    ],
+    "distance": 331,
+    "duration": 313,
+    "type": "cycling",
+    "elevationGain": 3331,
+    "speed": 63.45047923322684,
+    "description": "Cycling on August 15"
+  },
+  {
+    "date": "2023-08-15T14:01:18.741Z",
+    "id": "2108078741",
+    "clicks": 0,
+    "coords": [
+      52.42553254201615,
+      30.998697280883793
+    ],
+    "distance": 123,
+    "duration": 313,
+    "type": "running",
+    "cadence": 414,
+    "pace": 2.5447154471544717,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T14:01:22.701Z",
+    "id": "2108082701",
+    "clicks": 0,
+    "coords": [
+      52.42016748135835,
+      30.994885996933917
+    ],
+    "distance": 12313,
+    "duration": 1312,
+    "type": "running",
+    "cadence": 123123,
+    "pace": 0.10655404856655568,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T14:01:27.782Z",
+    "id": "2108087782",
+    "clicks": 0,
+    "coords": [
+      52.4048014766754,
+      30.971707856030175
+    ],
+    "distance": 1231,
+    "duration": 12312,
+    "type": "running",
+    "cadence": 123123,
+    "pace": 10.001624695369618,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T14:01:33.542Z",
+    "id": "2108093542",
+    "clicks": 0,
+    "coords": [
+      52.41048254848418,
+      30.976938238041633
+    ],
+    "distance": 12312,
+    "duration": 123123,
+    "type": "running",
+    "cadence": 123,
+    "pace": 10.000243664717349,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T14:01:37.887Z",
+    "id": "2108097887",
+    "clicks": 0,
+    "coords": [
+      52.418727963759444,
+      30.968697981019226
+    ],
+    "distance": 123123,
+    "duration": 12312,
+    "type": "running",
+    "cadence": 12312,
+    "pace": 0.09999756341219757,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T14:01:45.208Z",
+    "id": "2108105208",
+    "clicks": 0,
+    "coords": [
+      52.41713135290995,
+      30.982517578733844
+    ],
+    "distance": 123123,
+    "duration": 123123,
+    "type": "running",
+    "cadence": 123123,
+    "pace": 1,
+    "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-15T14:03:13.434Z",
+    "id": "2108193434",
+    "clicks": 0,
+    "coords": [
+      52.412341173491896,
+      30.95838586230301
+    ],
+    "distance": 123,
+    "duration": 331,
+    "type": "running",
+    "cadence": 515,
+    "pace": 2.6910569105691056,
+    "description": "Running on August 15"
+  }
+]`;
