@@ -158,6 +158,26 @@ a:visited {
   opacity: 0.7;
 }
 
+.workout__btn--edit {
+  height: 2rem;
+  position: absolute;
+
+  font-size: 1.5rem;
+  color: #d2d2d285;
+  top: 1rem;
+  right: 3.1rem;
+  padding: 0 0.2rem;
+  line-height: 0.2;
+  opacity: 1;
+  transform: rotate(45deg);
+  transition: all 0.2s;
+  overflow: hidden;
+}
+
+.workout__btn--edit:hover {
+  opacity: 0.7;
+}
+
 .form {
   background-color: var(--color-dark--2);
   border-radius: 5px;
