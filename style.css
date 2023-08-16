@@ -164,18 +164,22 @@ a:visited {
 
   font-size: 1.5rem;
   color: #d2d2d285;
-  top: 1rem;
-  right: 3.1rem;
-  padding: 0 0.2rem;
+  top: 0.8rem;
+  right: 3rem;
   line-height: 0.2;
   opacity: 1;
-  transform: rotate(45deg);
   transition: all 0.2s;
   overflow: hidden;
 }
 
 .workout__btn--edit:hover {
   opacity: 0.7;
+}
+
+.btn--edit__icon {
+  display: block;
+  transform-origin: left;
+  transform: rotate(45deg);
 }
 
 .form {
@@ -232,8 +236,26 @@ a:visited {
   background-color: #fff;
 }
 
+.form__input[type='number']::-webkit-outer-spin-button,
+.form__input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .form__btn {
   display: none;
+}
+
+.workout__edit--form {
+  display: flex;
+  grid-column: 1/-1;
+  gap: 2rem;
+}
+
+.workout__edit--form .form__row {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .copyright {

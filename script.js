@@ -252,7 +252,7 @@ class App {
     this.#markers.push({ marker: workoutMarker, id: workout.id });
   }
 
-  _renderWorkout(workout) {
+  _renderWorkout(workout, insert = true) {
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
           <h2 class="workout__title">${workout.description}</h2>
@@ -280,6 +280,9 @@ class App {
             <span class="workout__value">${workout.cadence}</span>
             <span class="workout__unit">spm</span>
           </div>
+          <span class="workout__btn--edit">
+            <i class="btn--edit__icon">✏</i>
+          </span>
           <span class="workout__btn--close">&times;</span>
         </li>`;
     }
@@ -295,11 +298,14 @@ class App {
             <span class="workout__value">${workout.elevationGain}</span>
             <span class="workout__unit">m</span>
           </div>
+          <span class="workout__btn--edit">
+            <i class="btn--edit__icon">✏</i>
+          </span>
           <span class="workout__btn--close">&times;</span>
         </li>`;
     }
-
-    form.insertAdjacentHTML('afterend', html);
+    if (insert) form.insertAdjacentHTML('afterend', html);
+    return html;
   }
 
   _moveToPopup(e) {
@@ -343,8 +349,14 @@ class App {
     if (!workoutEl) return;
 
     const closeBtn = e.target.classList.contains('workout__btn--close');
+    const editBtn = e.target.closest('.workout__btn--edit');
     if (closeBtn) {
       this._removeWorkout(e);
+      return;
+    }
+
+    if (editBtn) {
+      this._editWorkout(e);
       return;
     }
 
@@ -375,6 +387,71 @@ class App {
 
     // set updated data for localStorage
     this._setLocalStorage();
+  }
+
+  _editWorkout(e) {
+    const work = e.target.closest('.workout');
+
+    //load form instead of work out on place of that workout
+    const id = work.dataset.id;
+    const data = this.#workouts.find(e => e.id === id);
+
+    work.innerHTML = `
+    <form class="workout__edit--form" data-id=${data.id}>
+          <div class="form__row">
+            <label class="form__label">Distance</label>
+            <input type="number" class="form__input form__input--distance" placeholder="km" value="${
+              data.distance
+            }"/>
+          </div>
+          <div class="form__row">
+            <label class="form__label">Duration</label>
+            <input type="number" class="form__input form__input--duration"
+              placeholder="min"
+              value="${data.duration}"
+            />
+          </div>
+          <div class="form__row">
+            <label class="form__label">${
+              data?.cadence ? 'Cadence' : 'Elevation'
+            }</label>
+            <input type="number" class="form__input form__input--${
+              data?.cadence ? 'cadence' : 'elevation'
+            }"
+              placeholder="${data?.cadence ? 'step/min' : 'meters'}"
+              value="${data?.cadence || data?.elevationGain}"
+            />
+          <button class="form__btn">OK</button>
+        </form>`;
+
+    //handle submit form
+    const workForm = work.querySelector('.workout__edit--form');
+
+    workForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const editForm = e.target;
+
+      data.distance = editForm[0].value;
+      data.duration = editForm[1].value;
+      if (data.type === 'running') {
+        data.cadence = editForm[2].value;
+        data.pace = data.duration / data.distance;
+      } else {
+        data.elevationGain = editForm[2].value;
+        data.speed = data.distance / (data.duration / 60);
+      }
+
+      const workEl = new DOMParser()
+        .parseFromString(this._renderWorkout(data, false), 'text/html')
+        .querySelector('.workout');
+      containerWorkouts.replaceChild(workEl, work);
+    });
+
+    /**
+     * 1. add data of workout to inputs
+     * 2. on submit reRender workout on the same place with new data
+     * 3. renew data in #workouts
+     */
   }
 
   _removeAllWorkouts() {
