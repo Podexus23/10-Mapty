@@ -445,13 +445,9 @@ class App {
         .parseFromString(this._renderWorkout(data, false), 'text/html')
         .querySelector('.workout');
       containerWorkouts.replaceChild(workEl, work);
-    });
 
-    /**
-     * 1. add data of workout to inputs
-     * 2. on submit reRender workout on the same place with new data
-     * 3. renew data in #workouts
-     */
+      this._setLocalStorage();
+    });
   }
 
   _removeAllWorkouts() {
