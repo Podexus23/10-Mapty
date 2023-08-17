@@ -61,10 +61,44 @@ a:visited {
   height: 77vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  padding-top: 1rem;
 }
 
 .workouts::-webkit-scrollbar {
   width: 0;
+}
+
+.workouts__sort {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+  -moz-column-gap: 1.6rem;
+  column-gap: 1.6rem;
+}
+
+.workouts__sort--btn {
+  flex: 1 1 50%;
+  padding: 0.5rem 0;
+  font-family: inherit;
+}
+
+.workouts__sort--btn {
+  background-color: #939393b4;
+  border: 2px solid #ffffff61;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+
+  transition: all 0.3s;
+}
+
+.workouts__sort--btn:hover {
+  background-color: var(--color-brand--2);
+  transform: translateY(-2px);
+}
+
+.workouts__sort--btn.active {
+  background-color: var(--color-brand--2);
 }
 
 .sidebar__btn--delete {

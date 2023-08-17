@@ -1,9 +1,9 @@
 'use strict';
 //TODO LIST
 //!easy
-//Ability to edit workout
-//Ability to delete workout
-//Ability to delete all workout
+//Ability to edit workout +
+//Ability to delete workout +
+//Ability to delete all workout +
 //Sort by distance or by duration
 //rebuilt running and cycling objects coming from local storage, chain them to classes
 //More realistic error and confirmation messages
@@ -452,10 +452,8 @@ class App {
 
   _removeAllWorkouts() {
     //remove from workouts interface
-    const workoutElems = containerWorkouts.querySelectorAll('.workout');
-    workoutElems.forEach(elem => containerWorkouts.removeChild(elem));
+    this._cleanContainerWorkouts();
     this.#markers.forEach(mark => {
-      console.log(this);
       mark.marker.removeFrom(this.#map);
     });
     //remove workouts data from app
@@ -486,6 +484,15 @@ class App {
       this._removeAllWorkouts();
       closeModal();
     }
+  }
+
+  _cleanContainerWorkouts() {
+    const workoutElems = containerWorkouts.querySelectorAll('.workout');
+    workoutElems.forEach(elem => containerWorkouts.removeChild(elem));
+  }
+
+  _sortingWorkouts(e) {
+    console.log(e);
   }
 }
 const app = new App();
