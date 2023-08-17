@@ -6,6 +6,7 @@
 //Ability to delete all workout +
 //Sort by distance or by duration +
 //rebuilt running and cycling objects coming from local storage, chain them to classes
+//remove sorting on new workout?
 //More realistic error and confirmation messages
 //!hard
 //ability to position the map to show all workouts
@@ -341,6 +342,9 @@ class App {
     this.#workouts = data;
 
     this.#workouts.forEach(work => {
+      if (work.type === 'cycling') work.__proto__ = Cycling.prototype;
+      if (work.type === 'running') work.__proto__ = Running.prototype;
+      console.log(work);
       this._renderWorkout(work);
     });
   }
@@ -542,10 +546,10 @@ const app = new App();
       52.42137140544184,
       30.973248481750492
     ],
-    "distance": 12,
-    "duration": 33,
+    "distance": "12",
+    "duration": "33",
     "type": "running",
-    "cadence": 114,
+    "cadence": "44",
     "pace": 2.75,
     "description": "Running on August 15"
   },
@@ -565,96 +569,6 @@ const app = new App();
     "description": "Cycling on August 15"
   },
   {
-    "date": "2023-08-15T14:01:18.741Z",
-    "id": "2108078741",
-    "clicks": 0,
-    "coords": [
-      52.42553254201615,
-      30.998697280883793
-    ],
-    "distance": 123,
-    "duration": 313,
-    "type": "running",
-    "cadence": 414,
-    "pace": 2.5447154471544717,
-    "description": "Running on August 15"
-  },
-  {
-    "date": "2023-08-15T14:01:22.701Z",
-    "id": "2108082701",
-    "clicks": 0,
-    "coords": [
-      52.42016748135835,
-      30.994885996933917
-    ],
-    "distance": 12313,
-    "duration": 1312,
-    "type": "running",
-    "cadence": 123123,
-    "pace": 0.10655404856655568,
-    "description": "Running on August 15"
-  },
-  {
-    "date": "2023-08-15T14:01:27.782Z",
-    "id": "2108087782",
-    "clicks": 0,
-    "coords": [
-      52.4048014766754,
-      30.971707856030175
-    ],
-    "distance": 1231,
-    "duration": 12312,
-    "type": "running",
-    "cadence": 123123,
-    "pace": 10.001624695369618,
-    "description": "Running on August 15"
-  },
-  {
-    "date": "2023-08-15T14:01:33.542Z",
-    "id": "2108093542",
-    "clicks": 0,
-    "coords": [
-      52.41048254848418,
-      30.976938238041633
-    ],
-    "distance": 12312,
-    "duration": 123123,
-    "type": "running",
-    "cadence": 123,
-    "pace": 10.000243664717349,
-    "description": "Running on August 15"
-  },
-  {
-    "date": "2023-08-15T14:01:37.887Z",
-    "id": "2108097887",
-    "clicks": 0,
-    "coords": [
-      52.418727963759444,
-      30.968697981019226
-    ],
-    "distance": 123123,
-    "duration": 12312,
-    "type": "running",
-    "cadence": 12312,
-    "pace": 0.09999756341219757,
-    "description": "Running on August 15"
-  },
-  {
-    "date": "2023-08-15T14:01:45.208Z",
-    "id": "2108105208",
-    "clicks": 0,
-    "coords": [
-      52.41713135290995,
-      30.982517578733844
-    ],
-    "distance": 123123,
-    "duration": 123123,
-    "type": "running",
-    "cadence": 123123,
-    "pace": 1,
-    "description": "Running on August 15"
-  },
-  {
     "date": "2023-08-15T14:03:13.434Z",
     "id": "2108193434",
     "clicks": 0,
@@ -668,5 +582,35 @@ const app = new App();
     "cadence": 515,
     "pace": 2.6910569105691056,
     "description": "Running on August 15"
+  },
+  {
+    "date": "2023-08-16T20:20:32.041Z",
+    "id": "2217232041",
+    "clicks": 0,
+    "coords": [
+      52.423438937486075,
+      30.95926522713728
+    ],
+    "distance": "14",
+    "duration": "44",
+    "type": "running",
+    "cadence": "150",
+    "pace": 3.142857142857143,
+    "description": "Running on August 16"
+  },
+  {
+    "date": "2023-08-17T10:11:27.407Z",
+    "id": "2267087407",
+    "clicks": 0,
+    "coords": [
+      52.41524675424012,
+      30.97418752835149
+    ],
+    "distance": "16",
+    "duration": "45",
+    "type": "running",
+    "cadence": "45",
+    "pace": 2.8125,
+    "description": "Running on August 17"
   }
 ]`;
