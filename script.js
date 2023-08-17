@@ -16,6 +16,7 @@
 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
+const containerSortBtns = document.querySelector('.workouts__sort');
 const inputType = document.querySelector('.form__input--type');
 const inputDistance = document.querySelector('.form__input--distance');
 const inputDuration = document.querySelector('.form__input--duration');
@@ -116,6 +117,11 @@ class App {
     sidebarModalEl.addEventListener(
       'click',
       this._handleRemoveAllModal.bind(this)
+    );
+
+    containerSortBtns.addEventListener(
+      'click',
+      this._sortingWorkouts.bind(this)
     );
 
     // containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
@@ -431,13 +437,13 @@ class App {
       e.preventDefault();
       const editForm = e.target;
 
-      data.distance = editForm[0].value;
-      data.duration = editForm[1].value;
+      data.distance = +editForm[0].value;
+      data.duration = +editForm[1].value;
       if (data.type === 'running') {
-        data.cadence = editForm[2].value;
+        data.cadence = +editForm[2].value;
         data.pace = data.duration / data.distance;
       } else {
-        data.elevationGain = editForm[2].value;
+        data.elevationGain = +editForm[2].value;
         data.speed = data.distance / (data.duration / 60);
       }
 
@@ -492,7 +498,37 @@ class App {
   }
 
   _sortingWorkouts(e) {
-    console.log(e);
+    const button = e.target;
+    if (!button.classList.contains('workouts__sort--btn')) return;
+    //Make a copy of array for sorting, and not mutating original data
+    const sortedWorkouts = [...this.#workouts];
+    if (button.dataset.sort === 'duration') {
+      sortedWorkouts.sort((a, b) => +a.duration - +b.duration);
+    }
+    if (button.dataset.sort === 'distance') {
+      sortedWorkouts.sort((a, b) => +a.distance - +b.distance);
+    }
+    if (button.dataset.sort === 'type') {
+      sortedWorkouts.sort((a, b) => {
+        if (a.type === b.type) return 0;
+        if (a.type === 'cycling' && b.type === 'running') return 1;
+        else return -1;
+      });
+    }
+    this._cleanContainerWorkouts();
+    sortedWorkouts.forEach(work => this._renderWorkout(work));
+
+    //Button visual changes
+    if (button.classList.contains('active')) {
+      //remove sorting and active button
+      this._cleanContainerWorkouts();
+      this.#workouts.forEach(work => this._renderWorkout(work));
+    } else {
+      containerSortBtns
+        .querySelectorAll('.workouts__sort--btn')
+        .forEach(btn => btn.classList.remove('active'));
+    }
+    button.classList.toggle('active');
   }
 }
 const app = new App();
