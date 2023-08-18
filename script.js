@@ -1,13 +1,4 @@
 'use strict';
-//TODO LIST
-//!easy
-//Ability to edit workout +
-//Ability to delete workout +
-//Ability to delete all workout +
-//Sort by distance or by duration +
-//rebuilt running and cycling objects coming from local storage, chain them to classes
-//remove sorting on new workout?
-//More realistic error and confirmation messages
 //!hard
 //ability to position the map to show all workouts
 //Allow do draw lines and shapes instead of just points?
