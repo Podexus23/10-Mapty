@@ -1,5 +1,5 @@
 'use strict';
-import { geocodeAPI } from './api.js';
+import { reverseGeoAPI } from './api.js';
 
 //!hard
 //ability to position the map to show all workouts
@@ -9,8 +9,8 @@ import { geocodeAPI } from './api.js';
 //Display weather data for workout time and place
 
 //init API
-// const geoData = [52.42137140544184, 30.973248481750492];
-// geocodeAPI(geoData);
+const geoData = [52.42137140544184, 30.973248481750492];
+// reverseGeoAPI(geoData);
 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
@@ -175,7 +175,7 @@ class App {
     inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
   }
 
-  _newWorkout(e) {
+  async _newWorkout(e) {
     const validInputs = (...inputs) =>
       inputs.every(inp => Number.isFinite(inp));
     const allPositive = (...inputs) => inputs.every(inp => inp > 0);
@@ -186,6 +186,7 @@ class App {
     const distance = +inputDistance.value;
     const duration = +inputDuration.value;
     const { lat, lng } = this.#mapEvent.latlng;
+
     let workout;
 
     //if workout running, create running object
@@ -219,6 +220,7 @@ class App {
       }
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
+    await this._addAddressToWorkout(workout);
     //add object to workout array
     this.#workouts.push(workout);
 
@@ -260,6 +262,7 @@ class App {
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
           <h2 class="workout__title">${workout.description}</h2>
+          <h2 class="workout__address">${workout.address}</h2>
           <div class="workout__details">
             <span class="workout__icon">${
               workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
@@ -338,7 +341,8 @@ class App {
     if (!data) return;
     this.#workouts = data;
 
-    this.#workouts.forEach(work => {
+    this.#workouts.forEach(async work => {
+      if (!work.address) await this._addAddressToWorkout(work);
       if (work.type === 'cycling') work.__proto__ = Cycling.prototype;
       if (work.type === 'running') work.__proto__ = Running.prototype;
       this._renderWorkout(work);
@@ -530,8 +534,15 @@ class App {
     }
     button.classList.toggle('active');
   }
+
+  async _addAddressToWorkout(workout) {
+    const address = await reverseGeoAPI(workout.coords);
+    workout.address = address;
+    this._setLocalStorage();
+  }
 }
 const app = new App();
+console.log(app);
 
 `[
   {
