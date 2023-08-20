@@ -4,12 +4,6 @@ import { reverseGeoAPI, weatherAPI } from './api.js';
 //!hard
 //ability to position the map to show all workouts
 //Allow do draw lines and shapes instead of just points?
-//!async
-//Display weather data for workout time and place
-
-//init API
-const geoData = [52.42137140544184, 30.973248481750492];
-// reverseGeoAPI(geoData);
 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
@@ -550,7 +544,6 @@ class App {
   }
 }
 const app = new App();
-console.log(app);
 
 `[
   {
