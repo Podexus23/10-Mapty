@@ -1,5 +1,5 @@
 'use strict';
-import { reverseGeoAPI, weatherAPI } from './api.js';
+import { reverseGeoAPI, weatherAPI, openWeatherAPI } from './api.js';
 
 //!hard
 //ability to position the map to show all workouts
@@ -544,7 +544,7 @@ class App {
   }
 
   async _addCurrentWeatherToWorkout(workout) {
-    workout.weather = await weatherAPI(workout.coords);
+    workout.weather = await openWeatherAPI(workout.coords);
     this._setLocalStorage;
   }
 }

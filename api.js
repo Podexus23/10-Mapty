@@ -1,8 +1,9 @@
 const GEOKEY = '1b2f84f69a5947a58999c69dc41a31f6';
 const WEATHERKEY = `0eWyM0dvtpBYRfGrjAZ1hxeEuxM0I4KK`;
+const OWKEY = 'd75b5d68cc5998149568352458931b12';
 
 const reverseGeoAPI = async function ([lat, lon]) {
-  console.log('Searching:');
+  // console.log('Searching:');
   try {
     const response = await fetch(
       `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${GEOKEY}`,
@@ -36,4 +37,18 @@ const weatherAPI = async function (coords) {
   }
 };
 
-export { reverseGeoAPI, weatherAPI };
+const openWeatherAPI = async function (coords) {
+  try {
+    const [lat, lon] = coords;
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OWKEY}&units=metric`
+    );
+    const data = await response.json();
+
+    return `${Math.round(data.main.temp)}&#8451;`;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export { reverseGeoAPI, weatherAPI, openWeatherAPI };
