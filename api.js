@@ -18,20 +18,22 @@ const reverseGeoAPI = async function ([lat, lon]) {
 };
 
 const weatherAPI = async function (coords) {
-  const [lat, lon] = coords;
-  const locRes = await fetch(
-    `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${WEATHERKEY}&q=${lat}%2C%20${lon}`
-  );
-  const locData = await locRes.json();
-  const weatherRes = await fetch(
-    `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${locData.Key}?apikey=${WEATHERKEY}&metric=true`
-  );
+  try {
+    const [lat, lon] = coords;
+    const locRes = await fetch(
+      `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${WEATHERKEY}&q=${lat}%2C%20${lon}`
+    );
+    const locData = await locRes.json();
+    const weatherRes = await fetch(
+      `http://dataservice.accuweather.com/forecasts/v1/daily/1day/${locData.Key}?apikey=${WEATHERKEY}&metric=true`
+    );
 
-  const weatherData = await weatherRes.json();
-  console.log(weatherData);
-  const temps = weatherData.DailyForecasts[0].Temperature;
-  console.log();
-  return `${temps.Minimum.Value}&#8451; - ${temps.Maximum.Value}&#8451;`;
+    const weatherData = await weatherRes.json();
+    const temps = weatherData.DailyForecasts[0].Temperature;
+    return `${temps.Minimum.Value}&#8451; - ${temps.Maximum.Value}&#8451;`;
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 export { reverseGeoAPI, weatherAPI };
