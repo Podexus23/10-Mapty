@@ -154,6 +154,8 @@ a:visited {
   font-size: 1.2rem;
   font-weight: 400;
   grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .workout__details {

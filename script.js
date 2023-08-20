@@ -1,11 +1,10 @@
 'use strict';
-import { reverseGeoAPI } from './api.js';
+import { reverseGeoAPI, weatherAPI } from './api.js';
 
 //!hard
 //ability to position the map to show all workouts
 //Allow do draw lines and shapes instead of just points?
 //!async
-//Add geocode location from coordinates
 //Display weather data for workout time and place
 
 //init API
@@ -221,6 +220,7 @@ class App {
       workout = new Cycling([lat, lng], distance, duration, elevation);
     }
     await this._addAddressToWorkout(workout);
+    await this._addCurrentWeatherToWorkout(workout);
     //add object to workout array
     this.#workouts.push(workout);
 
@@ -262,7 +262,10 @@ class App {
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
           <h2 class="workout__title">${workout.description}</h2>
-          <h2 class="workout__address">${workout.address}</h2>
+          <p class="workout__address"><span>${workout.address}</span><span>${
+      workout.weather ?? ''
+    }</span></p>
+          
           <div class="workout__details">
             <span class="workout__icon">${
               workout.type === 'running' ? '🏃‍♂️' : '🚴‍♀️'
@@ -539,6 +542,11 @@ class App {
     const address = await reverseGeoAPI(workout.coords);
     workout.address = address;
     this._setLocalStorage();
+  }
+
+  async _addCurrentWeatherToWorkout(workout) {
+    workout.weather = await weatherAPI(workout.coords);
+    this._setLocalStorage;
   }
 }
 const app = new App();
