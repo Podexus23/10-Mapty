@@ -1,10 +1,16 @@
 'use strict';
+import { geocodeAPI } from './api.js';
+
 //!hard
 //ability to position the map to show all workouts
 //Allow do draw lines and shapes instead of just points?
 //!async
 //Add geocode location from coordinates
 //Display weather data for workout time and place
+
+//init API
+// const geoData = [52.42137140544184, 30.973248481750492];
+// geocodeAPI(geoData);
 
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
@@ -335,7 +341,6 @@ class App {
     this.#workouts.forEach(work => {
       if (work.type === 'cycling') work.__proto__ = Cycling.prototype;
       if (work.type === 'running') work.__proto__ = Running.prototype;
-      console.log(work);
       this._renderWorkout(work);
     });
   }
